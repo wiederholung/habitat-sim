@@ -756,10 +756,10 @@ class Sensor:
         # tell the audio sensor about the agent location
         rot = self._agent.state.rotation
 
-        audio_sensor.setAudioListenerTransform(
-            audio_sensor.node.absolute_translation,  # set the listener position
-            np.array([rot.w, rot.x, rot.y, rot.z]),  # set the listener orientation
-        )
+        # audio_sensor.setAudioListenerTransform(
+        #     audio_sensor.node.absolute_translation,  # set the listener position
+        #     np.array([rot.w, rot.x, rot.y, rot.z]),  # set the listener orientation
+        # )
 
         # run the simulation
         audio_sensor.runSimulation(self._sim)
