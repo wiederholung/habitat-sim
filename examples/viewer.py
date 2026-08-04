@@ -22,7 +22,7 @@ from magnum.platform.glfw import Application
 import habitat_sim
 from habitat_sim import ReplayRenderer, ReplayRendererConfiguration, physics
 from habitat_sim.logging import LoggingContext, logger
-from habitat_sim.utils.common import quat_from_angle_axis
+from habitat_sim.utils.common import quat_from_angle_axis, quat_to_angle_axis
 from habitat_sim.utils.settings import default_sim_settings, make_cfg
 
 
@@ -617,6 +617,18 @@ class HabitatSimInteractiveViewer(Application):
             else:
                 logger.warn("Load URDF: input file not found. Aborting.")
 
+        elif key == pressed.P:
+            agent_state = self.default_agent.get_state()
+            position = agent_state.position
+            angle, axis = quat_to_angle_axis(agent_state.rotation)
+            logger.info(
+                "Agent state: "
+                f"position=({position[0]:.3f}, {position[1]:.3f}, {position[2]:.3f}) "
+                f"rotation=(w={agent_state.rotation.w:.4f}, x={agent_state.rotation.x:.4f}, "
+                f"y={agent_state.rotation.y:.4f}, z={agent_state.rotation.z:.4f}) "
+                f"heading={math.degrees(angle):.2f}deg about axis=({axis[0]:.3f}, {axis[1]:.3f}, {axis[2]:.3f})"
+            )
+
         elif key == pressed.M:
             self.cycle_mouse_mode()
             logger.info(f"Command: mouse mode set to {self.mouse_interaction}")
@@ -1007,6 +1019,7 @@ Key Commands:
     'c':        Run a discrete collision detection pass and render a debug wireframe overlay showing active contact points and normals (yellow=fixed length normals, red=collision distances).
                 (+SHIFT) Toggle the contact point debug render overlay on/off.
     'j'         Toggle Semantic visualization bounds (currently only Semantic Region annotations)
+    'p':        Print the agent's current position and rotation to the terminal.
 
     Object Interactions:
     SPACE:      Toggle physics simulation on/off.
