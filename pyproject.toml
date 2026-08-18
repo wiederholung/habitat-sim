@@ -9,7 +9,7 @@ build-backend = "scikit_build_core.build"
 # ---- Project Metadata (PEP 621) ----
 [project]
 name = "habitat-sim"
-version = "0.3.3"
+version = "0.3.4"
 description = "A high performance simulator for training embodied agents"
 readme = "README.md"
 license = {text = "MIT"}
