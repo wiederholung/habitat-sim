@@ -207,6 +207,12 @@ if(BUILD_PYTHON_BINDINGS)
   set(_magnum_py_dir "${CMAKE_CURRENT_BINARY_DIR}/deps/magnum-bindings/src/python")
 
   # Install the top-level _corrade and _magnum extension modules
+  if(NOT APPLE)
+    # These modules are installed directly in site-packages.  Prefer the
+    # active environment's C++ runtime while retaining normal system fallback.
+    set_target_properties(corrade magnum PROPERTIES INSTALL_RPATH
+                                                     "$ORIGIN;$ORIGIN/../..")
+  endif()
   install(TARGETS corrade magnum LIBRARY DESTINATION . RUNTIME DESTINATION .)
 
   # Install corrade Python package (pure Python + sub-module .so files)

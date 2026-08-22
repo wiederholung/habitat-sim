@@ -62,7 +62,13 @@ endif()
 if(APPLE)
   set_target_properties(habitat_sim_bindings PROPERTIES INSTALL_RPATH "@loader_path")
 else()
-  set_target_properties(habitat_sim_bindings PROPERTIES INSTALL_RPATH "$ORIGIN")
+  # Keep co-located libraries discoverable and prefer the active environment's
+  # C++ runtime over the system copy.  The latter matters for Conda packages
+  # such as llvmlite that require newer GLIBCXX symbols than the host provides.
+  set_target_properties(
+    habitat_sim_bindings PROPERTIES INSTALL_RPATH
+                                   "$ORIGIN;$ORIGIN/../../../.."
+  )
 endif()
 
 if(BUILD_WITH_AUDIO)
